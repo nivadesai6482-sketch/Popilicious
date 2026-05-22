@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@600&display=swap');
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-primary: #FFD1DC;
   --color-primary-dark: #FFB6C1;
   --color-secondary: #FDF5E6;
@@ -9,17 +9,32 @@
   --color-text-main: #5D4037;
   --color-text-muted: #8D6E63;
   --color-bg-light: #FFFAF0;
+  --color-card-bg: #FFFFFF;
+  --color-border-subtle: rgba(93, 64, 55, 0.08);
+  --shadow-soft: 0 10px 30px rgba(93, 64, 55, 0.08);
+}
+
+@theme {
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-text-main: var(--color-text-main);
+  --color-text-muted: var(--color-text-muted);
+  --color-bg-light: var(--color-bg-light);
+  --color-card-bg: var(--color-card-bg);
+  --color-border-subtle: var(--color-border-subtle);
   
   --font-heading: "Playfair Display", serif;
   --font-body: "Outfit", sans-serif;
   --font-script: "Dancing Script", cursive;
   
-  --shadow-soft: 0 10px 30px rgba(93, 64, 55, 0.08);
+  --shadow-soft: var(--shadow-soft);
 }
 
 /* Base Styles */
 :root {
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -33,6 +48,7 @@
     background-color: var(--color-bg-light);
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.5s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4 {
@@ -47,30 +63,45 @@
 }
 
 .image-container img {
-  @apply w-full h-full object-cover transition-transform duration-500;
+  @apply w-full h-full object-cover transition-transform duration-700 ease-out;
 }
 
 .cake-card {
-  @apply bg-white rounded-3xl shadow-soft overflow-hidden flex flex-col h-full;
+  @apply bg-card-bg rounded-2xl shadow-soft overflow-hidden flex flex-col h-full border border-border-subtle transition-shadow duration-300;
+}
+
+.cake-card:hover {
+  box-shadow: 0 20px 40px rgba(93, 64, 55, 0.12);
 }
 
 /* Feature Cards */
 .feature-card {
-  @apply bg-white p-10 rounded-3xl shadow-soft border border-primary/10 flex flex-col items-center text-center transition-transform duration-300 h-full;
+  @apply bg-card-bg p-10 rounded-2xl shadow-soft border border-border-subtle flex flex-col items-center text-center transition-all duration-300 h-full;
+}
+.feature-card:hover {
+  @apply border-primary/30;
+  box-shadow: 0 20px 40px rgba(93, 64, 55, 0.12);
 }
 
 /* Button Styles */
 .btn-primary {
-  @apply bg-primary text-white px-8 py-3 rounded-full font-semibold transition-all shadow-md hover:bg-primary-dark hover:-translate-y-0.5;
+  @apply bg-primary text-text-main px-8 py-3 rounded-full font-semibold shadow-md cursor-pointer flex items-center justify-center gap-2 transition-colors duration-200;
+}
+.btn-primary:hover {
+  @apply bg-primary-dark;
 }
 
 .btn-outline {
-  @apply border-2 border-primary text-text-main px-8 py-3 rounded-full font-semibold transition-all hover:bg-primary hover:text-white;
+  @apply border-2 border-primary text-text-main px-8 py-3 rounded-full font-semibold cursor-pointer flex items-center justify-center gap-2 transition-colors duration-200;
+}
+.btn-outline:hover {
+  @apply bg-primary text-text-main;
 }
 
 /* Typography Utilities */
 .font-script {
   font-family: var(--font-script) !important;
+  font-style: italic !important;
 }
 
 .text-gradient {
@@ -87,27 +118,50 @@
 }
 
 .glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/30;
-}
-
-.sprinkle {
-  @apply absolute w-1 h-3 rounded-full pointer-events-none z-0;
-}
-
-.frosting-wave {
-  @apply absolute bottom-0 left-0 w-full leading-none overflow-hidden;
-}
-
-.frosting-wave svg {
-  @apply relative block w-full h-16;
-}
-
-.frosting-wave .shape-fill {
-  @apply fill-white;
+  @apply bg-card-bg/70 backdrop-blur-md border border-white/10;
 }
 
 .testimonial-card {
   @apply min-w-full px-4 text-center;
 }
 
-@media (max-width: 767px) { .hidden.md\:flex { display: none !important; } .flex.md\:hidden { display: flex !important; } }
+/* Animations */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-25px) rotate(-8deg); }
+}
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-float-1 {
+  animation: float-slow 8s ease-in-out infinite;
+}
+.animate-float-2 {
+  animation: float-medium 10s ease-in-out infinite;
+}
+.animate-float-3 {
+  animation: float-slow 12s ease-in-out infinite 1.5s;
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Custom Cake Builder Interactive Styles */
+.builder-option-btn {
+  @apply border border-border-subtle p-4 rounded-2xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-200 hover:border-primary/50 text-center bg-card-bg;
+}
+.builder-option-btn.active {
+  @apply border-primary bg-primary/10 scale-[1.03];
+  box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+}
+
+@media (max-width: 767px) { 
+  .hidden.md\:flex { display: none !important; } 
+  .flex.md\:hidden { display: flex !important; } 
+}
