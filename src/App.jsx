@@ -1545,7 +1545,7 @@ const FAQ = () => {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', message: '' });
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleInputChange = (e) => {
@@ -1562,14 +1562,14 @@ const Contact = () => {
   };
 
   const handleConfirmSend = () => {
-    const emailStr = formData.email.trim() ? `\n- Email: ${formData.email.trim()}` : '';
+    const phoneStr = formData.phone.trim() ? `\n- Phone: ${formData.phone.trim()}` : '';
     const textMsg = `Hi Sweety Shah! I would like to make a quick inquiry:
-- Name: ${formData.name.trim()}${emailStr}
+- Name: ${formData.name.trim()}${phoneStr}
 - Event details: ${formData.message.trim()}`;
     
     window.open(getWhatsAppLink(textMsg), '_blank');
     setShowConfirmModal(false);
-    setFormData({ name: '', email: '', message: '' });
+    setFormData({ name: '', phone: '', message: '' });
   };
 
   return (
@@ -1694,11 +1694,11 @@ const Contact = () => {
                    <motion.input 
                      whileFocus={{ scale: 1.02, borderColor: "#FFD1DC" }}
                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                     type="email" 
-                     name="email"
-                     value={formData.email}
+                     type="tel"
+                     name="phone"
+                     value={formData.phone}
                      onChange={handleInputChange}
-                     placeholder="Your Email" 
+                     placeholder="Your Phone Number" 
                      className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
                    />
                  </div>
@@ -1761,7 +1761,7 @@ const Contact = () => {
 
               <div className="bg-bg-light/60 p-5 rounded-2xl border border-border-subtle text-left mb-8 max-h-[200px] overflow-y-auto font-medium text-sm text-text-main space-y-2 whitespace-pre-wrap">
                 <strong>Name:</strong> {formData.name}
-                {formData.email && <><br /><strong>Email:</strong> {formData.email}</>}
+                {formData.phone && <><br /><strong>Phone:</strong> {formData.phone}</>}
                 <br /><strong>Message:</strong><br />{formData.message}
               </div>
 
