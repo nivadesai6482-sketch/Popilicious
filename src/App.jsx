@@ -122,12 +122,12 @@ const CAKE_CATEGORIES = [
 ];
 
 const GALLERY_IMAGES = [
-  '/media2.jpg',
-  '/media3.jpg',
-  '/wedding_cake_gallery.png',
-  '/biscoff_cake.png',
-  '/pistachio_cake.png',
-  '/rustic_cake.png',
+  '/gallery_berry_tart.png',
+  '/gallery_macaron_tower.png',
+  '/gallery_drip_cake.png',
+  '/gallery_floral_cupcakes.png',
+  '/gallery_mango_dessert.png',
+  '/gallery_lemon_blueberry.png',
 ];
 
 const TESTIMONIALS = [
