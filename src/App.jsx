@@ -89,7 +89,27 @@ const scaleUp = {
   transition: premiumTransition
 };
 
+// --- CONFIGURATION ---
+const WHATSAPP_NUMBER = "919925109075"; // Replace with her actual WhatsApp number (including country code)
+const INSTAGRAM_USERNAME = "popilicious_cake"; // Replace with her actual Instagram username
+
+const getWhatsAppLink = (message = "") => {
+  if (message) {
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  }
+  return `https://wa.me/${WHATSAPP_NUMBER}`;
+};
+
+const getInstagramDM = () => {
+  return `https://ig.me/m/${INSTAGRAM_USERNAME}`;
+};
+
+const getInstagramProfile = () => {
+  return `https://instagram.com/${INSTAGRAM_USERNAME}`;
+};
+
 // --- DATA ---
+
 
 const CAKE_CATEGORIES = [
   { id: 'birthday', title: 'Birthday Cakes', image: '/birthday_cake.png', description: 'Make your special day sweeter with our custom creations.' },
@@ -116,7 +136,7 @@ const TESTIMONIALS = [
 ];
 
 const FAQS = [
-  { q: 'How to place an order?', a: 'You can place an order by clicking the WhatsApp button or DMing us on Camera.' },
+  { q: 'How to place an order?', a: 'You can place an order by clicking the WhatsApp button or DMing us on Instagram.' },
   { q: 'How many days prior should I book?', a: 'For custom cakes, we recommend booking at least 3-5 days in advance.' },
   { q: 'Do you customize cakes?', a: 'Yes! We specialize in handcrafted, customized designs tailored to your theme.' },
   { q: 'Is delivery available?', a: 'We offer delivery within Surat city. Contact us for specific area availability.' },
@@ -162,14 +182,17 @@ const Navbar = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
-          <motion.button 
+          <motion.a 
+            href={getWhatsAppLink("Hi! I would like to place an order.")}
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.08, rotate: 1 }}
             whileTap={{ scale: 0.92, rotate: -1 }}
             transition={{ type: "spring", stiffness: 500, damping: 15 }}
             className="btn-primary"
           >
             Order Now
-          </motion.button>
+          </motion.a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -246,14 +269,17 @@ const Navbar = () => {
                 }}
                 className="w-full"
               >
-                <motion.button 
+                <motion.a 
+                  href={getWhatsAppLink("Hi! I would like to place an order.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.05, rotate: 0.5 }}
                   whileTap={{ scale: 0.92, rotate: -0.5 }}
                   transition={{ type: "spring", stiffness: 450, damping: 12 }}
                   className="btn-primary w-full mt-4"
                 >
                   Order Now
-                </motion.button>
+                </motion.a>
               </motion.div>
             </div>
           </motion.div>
@@ -311,22 +337,24 @@ const Hero = () => {
           transition={{ delay: 0.6 }}
           className="flex flex-col md:flex-row gap-6 justify-center items-center"
         >
-          <motion.button 
+          <motion.a 
+            href="#cakes"
             whileHover={{ scale: 1.08, rotate: 1.5 }}
             whileTap={{ scale: 0.92, rotate: -1.5 }}
             transition={{ type: "spring", stiffness: 500, damping: 12 }}
             className="btn-primary text-lg px-10"
           >
             Explore Cakes
-          </motion.button>
-          <motion.button 
+          </motion.a>
+          <motion.a 
+            href="#contact"
             whileHover={{ scale: 1.08, rotate: -1.5 }}
             whileTap={{ scale: 0.92, rotate: 1.5 }}
             transition={{ type: "spring", stiffness: 500, damping: 12 }}
             className="btn-outline text-lg px-10"
           >
             Contact Baker
-          </motion.button>
+          </motion.a>
         </motion.div>
       </motion.div>
 
@@ -1133,7 +1161,7 @@ const FlavorPairingLab = () => {
 
 I would like to place an order for this cake!`;
     const urlEncoded = encodeURIComponent(textMsg);
-    window.open(`https://wa.me/919999999999?text=${urlEncoded}`, '_blank');
+    window.open(getWhatsAppLink(textMsg), '_blank');
   };
 
   const vibes = [
@@ -1536,28 +1564,41 @@ const Contact = () => {
                 </div>
                 <div>
                   <div className="font-bold text-lg">Instagram</div>
-                  <div className="text-text-muted">@popilicious_cake</div>
+                  <a 
+                    href={getInstagramProfile()} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-text-muted hover:text-primary transition-colors duration-200"
+                  >
+                    @popilicious_cake
+                  </a>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 mt-16">
-              <motion.button 
+              <motion.a 
+                href={getWhatsAppLink("Hi! I would like to inquire about a custom cake.")}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="btn-primary flex items-center justify-center gap-3 py-4 text-lg"
+                className="btn-primary flex items-center justify-center gap-3 py-4 text-lg cursor-pointer"
               >
                 <MessageCircle size={24} /> WhatsApp Us
-              </motion.button>
-              <motion.button 
+              </motion.a>
+              <motion.a 
+                href={getInstagramDM()}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="btn-outline flex items-center justify-center gap-3 py-4 text-lg"
+                className="btn-outline flex items-center justify-center gap-3 py-4 text-lg cursor-pointer"
               >
                 <Instagram size={24} /> Instagram DM
-              </motion.button>
+              </motion.a>
             </div>
           </motion.div>
 
@@ -1621,16 +1662,22 @@ const Footer = () => {
         </div>
 
         <div className="flex gap-6">
-          {[Instagram, MessageCircle].map((Icon, i) => (
-            <motion.div 
+          {[
+            { icon: Instagram, href: getInstagramProfile() },
+            { icon: MessageCircle, href: getWhatsAppLink("Hi! I would like to get in touch.") }
+          ].map(({ icon: Icon, href }, i) => (
+            <motion.a 
               key={i} 
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.15, rotate: 12 }}
               whileTap={{ scale: 0.85 }}
               transition={{ type: "spring", stiffness: 400, damping: 12 }}
               className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center text-text-main hover:bg-primary hover:text-white transition-all cursor-pointer shadow-sm"
             >
               <Icon size={24} />
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </motion.div>
