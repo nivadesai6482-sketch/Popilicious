@@ -419,7 +419,7 @@ const SignatureCakes = () => {
 
         <motion.div 
           variants={staggerContainer}
-          className="flex overflow-x-auto pb-10 gap-8 no-scrollbar snap-x items-stretch"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-10"
         >
           {CAKE_CATEGORIES.map((cake, i) => (
             <motion.div 
@@ -427,7 +427,7 @@ const SignatureCakes = () => {
               variants={fadeInUpStagger}
               whileHover={{ y: -10, scale: 1.03, rotate: 0.3 }}
               transition={{ type: "spring", stiffness: 450, damping: 15 }}
-              className="min-w-[280px] md:min-w-[320px] cake-card snap-center flex-shrink-0 min-h-[440px]"
+              className="cake-card"
             >
               <div className="image-container">
                 <img src={cake.image} alt={cake.title} />
