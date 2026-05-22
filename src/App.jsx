@@ -1525,6 +1525,33 @@ const FAQ = () => {
 };
 
 const Contact = () => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.message.trim()) {
+      return;
+    }
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmSend = () => {
+    const emailStr = formData.email.trim() ? `\n- Email: ${formData.email.trim()}` : '';
+    const textMsg = `Hi Sweety Shah! I would like to make a quick inquiry:
+- Name: ${formData.name.trim()}${emailStr}
+- Event details: ${formData.message.trim()}`;
+    
+    window.open(getWhatsAppLink(textMsg), '_blank');
+    setShowConfirmModal(false);
+    setFormData({ name: '', email: '', message: '' });
+  };
+
   return (
     <motion.section 
       id="contact" 
@@ -1608,12 +1635,16 @@ const Contact = () => {
           >
              <div className="bg-bg-light p-10 rounded-[2rem] border border-primary/10">
                <h3 className="text-3xl font-bold mb-8 text-center">Quick Inquiry</h3>
-               <form className="space-y-8">
+               <form onSubmit={handleSubmit} className="space-y-8">
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    <motion.input 
                      whileFocus={{ scale: 1.02, borderColor: "#FFD1DC" }}
                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
                      type="text" 
+                     name="name"
+                     value={formData.name}
+                     onChange={handleInputChange}
+                     required
                      placeholder="Your Name" 
                      className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
                    />
@@ -1621,6 +1652,9 @@ const Contact = () => {
                      whileFocus={{ scale: 1.02, borderColor: "#FFD1DC" }}
                      transition={{ type: "spring", stiffness: 400, damping: 15 }}
                      type="email" 
+                     name="email"
+                     value={formData.email}
+                     onChange={handleInputChange}
                      placeholder="Your Email" 
                      className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
                    />
@@ -1628,6 +1662,10 @@ const Contact = () => {
                  <motion.textarea 
                    whileFocus={{ scale: 1.01, borderColor: "#FFD1DC" }}
                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                   name="message"
+                   value={formData.message}
+                   onChange={handleInputChange}
+                   required
                    placeholder="Tell us about your event (Date, Theme, Servings...)" 
                    rows="5" 
                    className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
@@ -1636,7 +1674,8 @@ const Contact = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                    className="btn-primary w-full py-5 text-xl shadow-lg"
+                    type="submit"
+                    className="btn-primary w-full py-5 text-xl shadow-lg cursor-pointer"
                  >
                     Send Message
                  </motion.button>
@@ -1645,6 +1684,62 @@ const Contact = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showConfirmModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[6000] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setShowConfirmModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className="bg-card-bg rounded-[2rem] p-8 md:p-10 max-w-lg w-full border border-primary/20 shadow-2xl relative overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Decorative top circle */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary-dark">
+                  <MessageCircle size={24} />
+                </div>
+                <h4 className="text-2xl font-bold text-text-main">Send via WhatsApp?</h4>
+              </div>
+
+              <p className="text-text-muted mb-6 leading-relaxed">
+                You will be redirected to WhatsApp to send this message to Sweety Shah:
+              </p>
+
+              <div className="bg-bg-light/60 p-5 rounded-2xl border border-border-subtle text-left mb-8 max-h-[200px] overflow-y-auto font-medium text-sm text-text-main space-y-2 whitespace-pre-wrap">
+                <strong>Name:</strong> {formData.name}
+                {formData.email && <><br /><strong>Email:</strong> {formData.email}</>}
+                <br /><strong>Message:</strong><br />{formData.message}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button 
+                  onClick={() => setShowConfirmModal(false)}
+                  className="btn-outline flex-1 py-3 text-base font-bold order-2 sm:order-1 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleConfirmSend}
+                  className="btn-primary flex-1 py-3 text-base font-bold order-1 sm:order-2 flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                >
+                  <MessageCircle size={18} /> Yes, Send Now
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 };
