@@ -405,9 +405,9 @@ const About = () => {
           className="relative"
         >
           <img 
-            src="/owner_profile.jpeg" 
+            src="/popilicious_logo.png" 
             className="rounded-3xl shadow-2xl z-10 relative w-full h-[500px] object-cover"
-            alt="Sweety Shah"
+            alt="Popilicious Cake Logo"
           />
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }}
