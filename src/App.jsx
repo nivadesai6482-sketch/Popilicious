@@ -18,7 +18,8 @@ import {
   Sparkles,
   CheckCircle2,
   Leaf,
-  Crown
+  Crown,
+  Calendar
 } from 'lucide-react';
 
 const Instagram = ({ size = 24, className = "" }) => (
@@ -404,9 +405,9 @@ const About = () => {
           className="relative"
         >
           <img 
-            src="/rustic_cake.png" 
+            src="/owner_profile.jpeg" 
             className="rounded-3xl shadow-2xl z-10 relative w-full h-[500px] object-cover"
-            alt="Artisanal Cake"
+            alt="Sweety Shah"
           />
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }}
@@ -1545,8 +1546,28 @@ const FAQ = () => {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', phone: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', phone: '', date: '', time: '', message: '' });
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const formatDateString = (dateStr) => {
+    if (!dateStr) return '';
+    const dateObj = new Date(dateStr);
+    if (isNaN(dateObj)) return dateStr;
+    return dateObj.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const formatTime12hr = (timeStr) => {
+    if (!timeStr) return '';
+    const [hoursStr, minutesStr] = timeStr.split(':');
+    const hours = parseInt(hoursStr, 10);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    return `${displayHours}:${minutesStr} ${ampm}`;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -1555,7 +1576,7 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.message.trim()) {
+    if (!formData.name.trim() || !formData.message.trim() || !formData.date || !formData.time) {
       return;
     }
     setShowConfirmModal(true);
@@ -1563,13 +1584,16 @@ const Contact = () => {
 
   const handleConfirmSend = () => {
     const phoneStr = formData.phone.trim() ? `\n- Phone: ${formData.phone.trim()}` : '';
+    const dateStr = formData.date ? `\n- Date: ${formatDateString(formData.date)}` : '';
+    const timeStr = formData.time ? `\n- Time: ${formatTime12hr(formData.time)}` : '';
+    
     const textMsg = `Hi Sweety Shah! I would like to make a quick inquiry:
-- Name: ${formData.name.trim()}${phoneStr}
+- Name: ${formData.name.trim()}${phoneStr}${dateStr}${timeStr}
 - Event details: ${formData.message.trim()}`;
     
     window.open(getWhatsAppLink(textMsg), '_blank');
     setShowConfirmModal(false);
-    setFormData({ name: '', phone: '', message: '' });
+    setFormData({ name: '', phone: '', date: '', time: '', message: '' });
   };
 
   return (
@@ -1702,6 +1726,40 @@ const Contact = () => {
                      className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
                    />
                  </div>
+                 
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <div className="relative flex flex-col gap-2">
+                     <label className="text-sm font-bold text-text-muted/80 pl-1 flex items-center gap-1.5">
+                       <Calendar size={16} className="text-primary-dark" /> Date Selection
+                     </label>
+                     <motion.input 
+                       whileFocus={{ scale: 1.02, borderColor: "#FFD1DC" }}
+                       transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                       type="date" 
+                       name="date"
+                       value={formData.date}
+                       onChange={handleInputChange}
+                       required
+                       className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main transition-shadow cursor-pointer" 
+                     />
+                   </div>
+                   <div className="relative flex flex-col gap-2">
+                     <label className="text-sm font-bold text-text-muted/80 pl-1 flex items-center gap-1.5">
+                       <Clock size={16} className="text-primary-dark" /> Time Selection (AM/PM)
+                     </label>
+                     <motion.input 
+                       whileFocus={{ scale: 1.02, borderColor: "#FFD1DC" }}
+                       transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                       type="time" 
+                       name="time"
+                       value={formData.time}
+                       onChange={handleInputChange}
+                       required
+                       className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main transition-shadow cursor-pointer" 
+                     />
+                   </div>
+                 </div>
+
                  <motion.textarea 
                    whileFocus={{ scale: 1.01, borderColor: "#FFD1DC" }}
                    transition={{ type: "spring", stiffness: 400, damping: 15 }}
@@ -1709,8 +1767,8 @@ const Contact = () => {
                    value={formData.message}
                    onChange={handleInputChange}
                    required
-                   placeholder="Tell us about your event (Date, Theme, Servings...)" 
-                   rows="5" 
+                   placeholder="Tell us about your event (Theme, Servings, Flavors...)" 
+                   rows="4" 
                    className="w-full p-5 rounded-2xl bg-card-bg border border-border-subtle focus:ring-2 focus:ring-primary outline-none text-lg shadow-sm text-text-main placeholder:text-text-muted/50 transition-shadow" 
                  />
                  <motion.button 
@@ -1759,9 +1817,11 @@ const Contact = () => {
                 You will be redirected to WhatsApp to send this message to Sweety Shah:
               </p>
 
-              <div className="bg-bg-light/60 p-5 rounded-2xl border border-border-subtle text-left mb-8 max-h-[200px] overflow-y-auto font-medium text-sm text-text-main space-y-2 whitespace-pre-wrap">
+              <div className="bg-bg-light/60 p-5 rounded-2xl border border-border-subtle text-left mb-8 max-h-[250px] overflow-y-auto font-medium text-sm text-text-main space-y-2 whitespace-pre-wrap">
                 <strong>Name:</strong> {formData.name}
                 {formData.phone && <><br /><strong>Phone:</strong> {formData.phone}</>}
+                {formData.date && <><br /><strong>Date:</strong> {formatDateString(formData.date)}</>}
+                {formData.time && <><br /><strong>Time:</strong> {formatTime12hr(formData.time)}</>}
                 <br /><strong>Message:</strong><br />{formData.message}
               </div>
 
