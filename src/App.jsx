@@ -193,6 +193,16 @@ const Navbar = () => {
           >
             Order Now
           </motion.a>
+          <motion.a 
+            href={`tel:+${WHATSAPP_NUMBER}`}
+            whileHover={{ scale: 1.08, rotate: -12 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            className="w-10 h-10 rounded-full border border-border-subtle flex items-center justify-center text-text-muted hover:text-primary hover:border-primary transition-all cursor-pointer"
+            title="Call Us"
+          >
+            <Phone size={18} />
+          </motion.a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -267,7 +277,7 @@ const Navbar = () => {
                   animate: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 15 } },
                   exit: { opacity: 0, y: 10, transition: { duration: 0.15 } }
                 }}
-                className="w-full"
+                className="w-full flex gap-4 mt-4"
               >
                 <motion.a 
                   href={getWhatsAppLink("Hi! I would like to place an order.")}
@@ -276,9 +286,19 @@ const Navbar = () => {
                   whileHover={{ scale: 1.05, rotate: 0.5 }}
                   whileTap={{ scale: 0.92, rotate: -0.5 }}
                   transition={{ type: "spring", stiffness: 450, damping: 12 }}
-                  className="btn-primary w-full mt-4"
+                  className="btn-primary flex-1 py-4 text-center"
                 >
                   Order Now
+                </motion.a>
+                <motion.a 
+                  href={`tel:+${WHATSAPP_NUMBER}`}
+                  whileHover={{ scale: 1.05, rotate: -0.5 }}
+                  whileTap={{ scale: 0.92, rotate: 0.5 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 12 }}
+                  className="btn-outline px-6 flex items-center justify-center cursor-pointer"
+                  title="Call Us"
+                >
+                  <Phone size={20} />
                 </motion.a>
               </motion.div>
             </div>
@@ -1601,6 +1621,20 @@ const Contact = () => {
                   </a>
                 </div>
               </div>
+              <div className="flex items-center gap-6">
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                  <Phone size={28} />
+                </div>
+                <div>
+                  <div className="font-bold text-lg">Call Us</div>
+                  <a 
+                    href={`tel:+${WHATSAPP_NUMBER}`} 
+                    className="text-text-muted hover:text-primary transition-colors duration-200"
+                  >
+                    +91 99251 09075
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-6 mt-16">
@@ -1614,6 +1648,15 @@ const Contact = () => {
                 className="btn-primary flex items-center justify-center gap-3 py-4 text-lg cursor-pointer"
               >
                 <MessageCircle size={24} /> WhatsApp Us
+              </motion.a>
+              <motion.a 
+                href={`tel:+${WHATSAPP_NUMBER}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                className="bg-accent hover:bg-accent/80 text-text-main px-8 py-4 rounded-full font-semibold shadow-md flex items-center justify-center gap-3 text-lg cursor-pointer transition-colors duration-200"
+              >
+                <Phone size={24} /> Call Us
               </motion.a>
               <motion.a 
                 href={getInstagramDM()}
@@ -1758,14 +1801,14 @@ const Footer = () => {
 
         <div className="flex gap-6">
           {[
-            { icon: Instagram, href: getInstagramProfile() },
-            { icon: MessageCircle, href: getWhatsAppLink("Hi! I would like to get in touch.") }
-          ].map(({ icon: Icon, href }, i) => (
+            { icon: Instagram, href: getInstagramProfile(), isExternal: true },
+            { icon: MessageCircle, href: getWhatsAppLink("Hi! I would like to get in touch."), isExternal: true },
+            { icon: Phone, href: `tel:+${WHATSAPP_NUMBER}`, isExternal: false }
+          ].map(({ icon: Icon, href, isExternal }, i) => (
             <motion.a 
               key={i} 
               href={href}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               whileHover={{ scale: 1.15, rotate: 12 }}
               whileTap={{ scale: 0.85 }}
               transition={{ type: "spring", stiffness: 400, damping: 12 }}
